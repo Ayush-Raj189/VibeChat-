@@ -1,25 +1,19 @@
 import { useState } from 'react'
-import { ShipWheelIcon } from "lucide-react";
+import { ShipWheelIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link } from 'react-router';
 import useSignUp from '../hooks/useSignUp';
 
-
 const SignUpPage = () => {
-
   const [signupData, setSignupData] = useState({
     fullName: "",
     email: "",
     password: "",
   });
 
-  // const queryClient = useQueryClient();
-  // const { mutate: signupMutation, isPending, error } = useMutation({
-  //   mutationFn: signup,
-  //   onSuccess: () =>
-  //     queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  // })
+  const [showPassword, setShowPassword] = useState(false);
 
   const { isPending, error, signupMutation } = useSignUp()
+  
   const handleSignup = (e) => {
     e.preventDefault();
     signupMutation(signupData);
@@ -53,10 +47,9 @@ const SignUpPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold">Create an Account</h2>
                   <p className="text-sm opacity-70">
-                    Join Streamify and start your language learning adventure!
+                    Join VibeChat and start your language learning adventure!
                   </p>
                 </div>
-
 
                 <div className="space-y-3">
                   {/* FULLNAME */}
@@ -64,7 +57,6 @@ const SignUpPage = () => {
                     <label className="label">
                       <span className="label-text">Full Name</span>
                     </label>
-
                     <input
                       type="text"
                       placeholder="John Doe"
@@ -74,6 +66,7 @@ const SignUpPage = () => {
                       required
                     />
                   </div>
+
                   {/* EMAIL */}
                   <div className="form-control w-full">
                     <label className="label">
@@ -88,19 +81,33 @@ const SignUpPage = () => {
                       required
                     />
                   </div>
-                  {/* PASSWORD */}
+
+                  {/* PASSWORD WITH EYE TOGGLE */}
                   <div className="form-control w-full">
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
-                    <input
-                      type="password"
-                      placeholder="********"
-                      className="input input-bordered w-full"
-                      value={signupData.password}
-                      onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
-                      required
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="********"
+                        className="input input-bordered w-full pr-10"
+                        value={signupData.password}
+                        onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-base-content opacity-60 hover:opacity-100"
+                      >
+                        {showPassword ? (
+                          <EyeOffIcon className="h-5 w-5" />
+                        ) : (
+                          <EyeIcon className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
                     <p className="text-xs opacity-70 mt-1">
                       Password must be at least 6 characters long
                     </p>
@@ -137,14 +144,9 @@ const SignUpPage = () => {
                     </Link>
                   </p>
                 </div>
-
               </div>
-
             </form>
-
-
           </div>
-
         </div>
 
         {/* SIGNUP FORM - RIGHT SIDE */}
